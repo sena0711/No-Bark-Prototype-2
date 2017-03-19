@@ -20,6 +20,17 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
-	
+
+	/**Door Frame Mesh */
+	UPROPERTY(EditAnywhere, Category = Mesh)
+		class UStaticMeshComponent* MeshDoorFrame;
+	/**Door Mesh*/
+	UPROPERTY(EditAnywhere, Category = Mesh)
+		class UStaticMeshComponent* MeshDoor;
+
+	/**Box Collision */
+	UPROPERTY(EditAnywhere, Category = Mesh)
+		class UBoxComponent* BoxCollisionComponent;
+
 	
 };
