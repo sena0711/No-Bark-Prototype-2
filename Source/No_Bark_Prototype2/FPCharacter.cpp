@@ -103,7 +103,7 @@ void AFPCharacter::BeginPlay()
 void AFPCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	UpdatePower(-DeltaTime*DecayRate*(GetInitialPower()));
+//	UpdatePower(-DeltaTime*DecayRate*(GetInitialPower()));
 }
 
 // Called to bind functionality to input
