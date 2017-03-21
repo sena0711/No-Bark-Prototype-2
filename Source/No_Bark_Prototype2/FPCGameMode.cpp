@@ -5,7 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "BatteryPickup.h"
 #include "FPCharacter.h"
-
+#include "Blueprint/UserWidget.h"
 
 AFPCGameMode::AFPCGameMode()
 {// set default pawn class to our Blueprinted character
@@ -31,14 +31,14 @@ void AFPCGameMode::BeginPlay()
 		PowerToWin = (MyCharacter->GetInitialPower())*1.25f;
 	}
 
-	/*if (HUDWidgetClass != nullptr)
+	if (HUDWidgetClass != nullptr)
 	{
 		CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), HUDWidgetClass);
 		if (CurrentWidget != nullptr)
 		{
 			CurrentWidget->AddToViewport();
 		}
-	}*/
+	}
 
 
 }
@@ -52,12 +52,12 @@ void AFPCGameMode::Tick(float DeltaTime)
 
 	if (MyCharacter)
 	{
-		//// If our power is greater than needed to win, set the game's state to Won
-		//if (MyCharacter->GetCurrentPower() > PowerToWin)
-		//{
-		//	SetCurrentState(EBatteryPlayState::EWon);
-		//}
-		// if the character's power is positive
+		// If our power is greater than needed to win, set the game's state to Won
+		if (MyCharacter->GetCurrentPower() > PowerToWin)
+		{
+			SetCurrentState(EBatteryPlayState::EWon);
+		}
+		 //if the character's power is positive
 		if (MyCharacter->GetCurrentPower() > 0)
 		{
 
