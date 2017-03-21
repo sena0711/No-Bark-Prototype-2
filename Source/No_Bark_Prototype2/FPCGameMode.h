@@ -18,10 +18,6 @@ enum class EBatteryPlayState
 	EUnknown
 };
 
-
-/**
-*
-*/
 UCLASS()
 class NO_BARK_PROTOTYPE2_API AFPCGameMode : public AGameMode
 {

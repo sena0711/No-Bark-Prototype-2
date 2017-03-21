@@ -7,8 +7,6 @@
 #include "FPCharacter.h"
 
 
-
-
 AFPCGameMode::AFPCGameMode()
 {// set default pawn class to our Blueprinted character
 	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/MyFPCharacter"));
