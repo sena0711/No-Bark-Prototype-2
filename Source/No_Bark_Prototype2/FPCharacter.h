@@ -119,6 +119,34 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Switch Variables")
 		float SphereRadius;
 
+
+	/**
+	Function to update the character's power
+	* @param PowerChange This is the amount to change the power by, and it can be positive or negative.
+	*/
+
+
+	/**Current power level of our character */
+	UPROPERTY(EditAnywhere, Category = "Power")
+		float CharacterPower;
+
+
+	/** Accessor function for initial power */
+	UFUNCTION(BlueprintPure, Category = "Power")
+		float GetInitialPower();
+
+	/** Accessor function for current power */
+	UFUNCTION(BlueprintPure, Category = "Power")
+		float GetCurrentPower();
+
+	/**
+	Function to update the character's power
+	* @param PowerChange This is the amount to change the power by, and it can be positive or negative.
+	*/
+	UFUNCTION(BlueprintCallable, Category = "Power")
+		void UpdatePower(float PowerChange);
+
+
 	protected:
 		// Called to bind functionality to input
 		virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -141,7 +169,6 @@ public:
 
 		UFUNCTION(BlueprintImplementableEvent, Category = "Power")
 			void PowerChangeEffect();
-
 
 public:
 	///** Returns Mesh1P subobject **/

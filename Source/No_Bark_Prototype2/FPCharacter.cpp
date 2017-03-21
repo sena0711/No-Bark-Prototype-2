@@ -3,6 +3,7 @@
 #include "No_Bark_Prototype2.h"
 #include "FPCharacter.h"
 #include "Pickup.h"
+#include "BatteryPickup.h"
 #include "GameFramework/InputSettings.h"
 
 // Sets default values
@@ -74,6 +75,14 @@ AFPCharacter::AFPCharacter()
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->AttachTo(RootComponent);
+
+	//set a base power level for the character
+	InitialPower = 2000.f;
+	CharacterPower = InitialPower;
+
+	// set the dependence of the speed on the power level
+	SpeedFactor = 0.75f;
+	BaseSpeed = 10.0f;
 
 }
 
@@ -188,16 +197,42 @@ void AFPCharacter::CollectPickups()
 		{
 			// Call the pickup's WasCollected function
 			TestPickup->WasCollected();
-			//// Check to see if the pickup is also a battery
-			//ABatteryPickup* const TestBattery = Cast<ABatteryPickup>(TestPickup);
-			//if (TestBattery)
-			//{
-			//	// increase the collected power
-			//	CollectedPower += TestBattery->GetPower();
-			//}
-			//// Deactivate the pickup 
+			// Check to see if the pickup is also a battery
+			ABatteryPickup* const TestBattery = Cast<ABatteryPickup>(TestPickup);
+			if (TestBattery)
+			{
+				// increase the collected power
+				CollectedPower += TestBattery->GetPower();
+			}
+			// Deactivate the pickup 
 			TestPickup->SetActive(false);
 		}
 	}
+	if (CollectedPower > 0)
+	{
+		UpdatePower(CollectedPower);
+	}
+}
 
+// Reports starting power
+float AFPCharacter::GetInitialPower()
+{
+	return InitialPower;
+}
+
+// Reports current power
+float AFPCharacter::GetCurrentPower()
+{
+	return CharacterPower;
+}
+
+// called whenever power is increased or decreased
+void AFPCharacter::UpdatePower(float PowerChange)
+{
+	// change power
+	CharacterPower = CharacterPower + PowerChange;
+	//// change speed based on power
+	//GetCharacterMovement()->MaxWalkSpeed = BaseSpeed + SpeedFactor * CharacterPower;
+	// call visual effect
+	PowerChangeEffect();
 }
