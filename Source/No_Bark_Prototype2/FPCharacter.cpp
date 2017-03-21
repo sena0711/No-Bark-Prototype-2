@@ -2,7 +2,7 @@
 
 #include "No_Bark_Prototype2.h"
 #include "FPCharacter.h"
-
+#include "Pickup.h"
 #include "GameFramework/InputSettings.h"
 
 // Sets default values
@@ -67,7 +67,13 @@ AFPCharacter::AFPCharacter()
 	Sphere1->OnComponentBeginOverlap.AddDynamic(this, &AFPCharacter::OnOverlapBegin);       // set up a notification for when this component overlaps something
 	Sphere1->OnComponentEndOverlap.AddDynamic(this, &AFPCharacter::OnOverlapEnd);       // set up a notification for when this component overlaps something
 
+																						// Create the collection sphere
+	CollectionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("CollectionSphere"));
+	CollectionSphere->AttachTo(RootComponent);
+	CollectionSphere->SetSphereRadius(200.f);
 
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
+	SpringArm->AttachTo(RootComponent);
 
 }
 
@@ -96,6 +102,7 @@ void AFPCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFPCharacter::TriggerLight);
+		PlayerInputComponent->BindAction("Collect", IE_Pressed, this, &AFPCharacter::CollectPickups);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &AFPCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AFPCharacter::MoveRight);
@@ -160,4 +167,37 @@ void AFPCharacter::OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class
 void AFPCharacter::ToggleLight()
 {
 	SpotLight1->ToggleVisibility();
+}
+
+void AFPCharacter::CollectPickups()
+{
+	// Get all overlapping Actors and store them in an array
+	TArray<AActor*> CollectedActors;
+	CollectionSphere->GetOverlappingActors(CollectedActors);
+
+	// keep track of the collected battery power
+	float CollectedPower = 0;
+
+	// For each Actor we collected
+	for (int32 iCollected = 0; iCollected < CollectedActors.Num(); ++iCollected)
+	{
+		// Cast the actor to APickup
+		APickup* const TestPickup = Cast<APickup>(CollectedActors[iCollected]);
+		// If the cast is successful and the pickup is valid and active 
+		if (TestPickup && !TestPickup->IsPendingKill() && TestPickup->IsPickupActive())
+		{
+			// Call the pickup's WasCollected function
+			TestPickup->WasCollected();
+			//// Check to see if the pickup is also a battery
+			//ABatteryPickup* const TestBattery = Cast<ABatteryPickup>(TestPickup);
+			//if (TestBattery)
+			//{
+			//	// increase the collected power
+			//	CollectedPower += TestBattery->GetPower();
+			//}
+			//// Deactivate the pickup 
+			TestPickup->SetActive(false);
+		}
+	}
+
 }

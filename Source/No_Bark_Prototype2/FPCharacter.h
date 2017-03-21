@@ -21,9 +21,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaSeconds) override;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 	/** Pawn mesh: 1st person view  */
 	UPROPERTY(EditAnywhere, Category = Mesh)
 		class USkeletalMeshComponent* Mesh1P;
@@ -39,6 +36,15 @@ public:
 	/** First person camera */
 	UPROPERTY(EditAnywhere, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		class UCameraComponent* FirstPersonCameraComponent;
+
+
+	/** Spring Arm Component  */
+	UPROPERTY(EditAnywhere, Category = "SpringArm")
+		class USpringArmComponent* SpringArm;
+
+	/** Location on gun mesh where light should spawn. */
+	UPROPERTY(EditAnywhere, Category = "PickupMesh")
+		class USphereComponent* CollectionSphere;
 
 
 	/** Gun muzzle's offset from the characters location */
@@ -113,11 +119,36 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Switch Variables")
 		float SphereRadius;
 
+	protected:
+		// Called to bind functionality to input
+		virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+		/** Called when we press a key to collect any pickups inside the CollectionSphere */
+		UFUNCTION(BlueprintCallable, Category = "Pickups")
+			void CollectPickups();
+
+		/**The starting power level of our character */
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power", Meta = (BlueprintProtected = "true"))
+			float InitialPower;
+
+		/** Multiplier for character speed */
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power", Meta = (BlueprintProtected = "true"))
+			float SpeedFactor;
+
+		/** Speed when power level = 0 */
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power", Meta = (BlueprintProtected = "true"))
+			float BaseSpeed;
+
+		UFUNCTION(BlueprintImplementableEvent, Category = "Power")
+			void PowerChangeEffect();
+
+
 public:
 	///** Returns Mesh1P subobject **/
 	//FORCEINLINE class USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
 	///** Returns FirstPersonCameraComponent subobject **/
 	//FORCEINLINE class UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
-
+	/** Returns GetCollectionSphere subobject **/
+	FORCEINLINE class USphereComponent* GetCollectionSphere() const { return CollectionSphere; }
 
 };
