@@ -70,20 +70,21 @@ AFPCharacter::AFPCharacter()
 
 																						// Create the collection sphere
 	CollectionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("CollectionSphere"));
-	CollectionSphere->AttachTo(RootComponent);
+	CollectionSphere->SetupAttachment(RootComponent);
 	CollectionSphere->SetSphereRadius(200.f);
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
-	SpringArm->AttachTo(RootComponent);
+	SpringArm->SetupAttachment(RootComponent);
 
 	//set a base power level for the character
 	InitialPower = 2000.f;
 	CharacterPower = InitialPower;
 
 	// set the dependence of the speed on the power level
-	SpeedFactor = 0.75f;
-	BaseSpeed = 10.0f;
-
+	LightFactor = 0.75f;
+	BaseFactor = 10.0f;
+	//base decay rate
+	DecayRate = 0.5f;
 }
 
 // Called when the game starts or when spawned
@@ -102,7 +103,7 @@ void AFPCharacter::BeginPlay()
 void AFPCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	UpdatePower(-DeltaTime*DecayRate*(GetInitialPower()));
 }
 
 // Called to bind functionality to input
