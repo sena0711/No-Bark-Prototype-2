@@ -16,7 +16,8 @@ AFPCGameMode::AFPCGameMode()
 	}
 
 	//base decay rate
-	DecayRate = 0.01f;
+	DecayRate = 0.05f;
+	RechargeRate = 0.01f;
 }
 
 void AFPCGameMode::BeginPlay()
@@ -60,9 +61,16 @@ void AFPCGameMode::Tick(float DeltaTime)
 		 //if the character's power is positive
 		if (MyCharacter->GetCurrentPower() > 0)
 		{
-
-			// decrease the character's power using the decay rate
-			MyCharacter->UpdatePower(-DeltaTime*DecayRate*(MyCharacter->GetInitialPower()));
+			if (MyCharacter->GetLightStatus() == true)
+			{
+				// decrease the character's power using the decay rate
+				MyCharacter->UpdatePower(-DeltaTime*DecayRate*(MyCharacter->GetInitialPower()));
+			}
+			else
+			{
+				MyCharacter->UpdatePower(+DeltaTime*RechargeRate*(MyCharacter->GetInitialPower()));
+			}
+			
 		}
 		else
 		{

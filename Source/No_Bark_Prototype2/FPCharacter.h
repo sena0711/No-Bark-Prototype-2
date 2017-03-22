@@ -177,8 +177,9 @@ public:
 			void PowerChangeEffect();
 
 		/**The rate at which the character loses power */
-		UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Power", Meta = (BlueprintProtected = "true"))
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power", Meta = (BlueprintProtected = "true"))
 			float DecayRate;
+
 
 public:
 	///** Returns Mesh1P subobject **/

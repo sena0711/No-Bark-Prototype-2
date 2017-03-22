@@ -43,9 +43,11 @@ public:
 
 protected:
 	/**The rate at which the character loses power */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Power", Meta = (BlueprintProtected = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power", Meta = (BlueprintProtected = "true"))
 		float DecayRate;
-
+	/**The rate at which the character loses power */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power", Meta = (BlueprintProtected = "true"))
+		float RechargeRate;
 	/**The power needed to win the game */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Power", Meta = (BlueprintProtected = "true"))
 		float PowerToWin;
