@@ -18,6 +18,7 @@ AFPCGameMode::AFPCGameMode()
 	//base decay rate
 	DecayRate = 0.05f;
 	RechargeRate = 0.01f;
+	TimeTicking = 0.0f;
 }
 
 void AFPCGameMode::BeginPlay()
@@ -61,6 +62,8 @@ void AFPCGameMode::Tick(float DeltaTime)
 		 //if the character's power is positive
 		if (MyCharacter->GetCurrentPower() > 0)
 		{
+
+			TimeTicking = (+DeltaTime*1.0f)+ TimeTicking;
 			if (MyCharacter->GetLightStatus() == true)
 			{
 				// decrease the character's power using the decay rate
@@ -74,6 +77,9 @@ void AFPCGameMode::Tick(float DeltaTime)
 		}
 		else
 		{
+			GameScore = TimeTicking;
+			TimeTicking = 0.0f;
+			
 			SetCurrentState(EBatteryPlayState::EGameOver);
 		}
 
@@ -84,6 +90,16 @@ void AFPCGameMode::Tick(float DeltaTime)
 float AFPCGameMode::GetPowerToWin() const
 {
 	return PowerToWin;
+}
+
+float AFPCGameMode::GetGameScore() const
+{
+	return GameScore;
+}
+
+float AFPCGameMode::GetTimeTicking() const
+{
+	return TimeTicking;
 }
 
 EBatteryPlayState AFPCGameMode::GetCurrentState() const

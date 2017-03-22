@@ -32,6 +32,11 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Power")
 		float GetPowerToWin() const;
 
+	UFUNCTION(BlueprintPure, Category = "Power")
+		float GetGameScore() const;
+	UFUNCTION(BlueprintPure, Category = "Power")
+		float GetTimeTicking() const;
+
 	virtual void BeginPlay() override;
 
 	/** Returns the current playing state */
@@ -48,6 +53,13 @@ protected:
 	/**The rate at which the character loses power */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power", Meta = (BlueprintProtected = "true"))
 		float RechargeRate;
+	/**The rate at which the character loses power */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power", Meta = (BlueprintProtected = "true"))
+		float TimeTicking;
+	/**The rate at which the character loses power */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power", Meta = (BlueprintProtected = "true"))
+		float GameScore;
+
 	/**The power needed to win the game */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Power", Meta = (BlueprintProtected = "true"))
 		float PowerToWin;
