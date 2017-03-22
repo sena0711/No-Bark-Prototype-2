@@ -130,6 +130,8 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Power")
 		float CharacterPower;
 
+	UPROPERTY(EditAnywhere, Category = "Power")
+		bool LightStatus;
 
 	/** Accessor function for initial power */
 	UFUNCTION(BlueprintPure, Category = "Power")
@@ -138,6 +140,10 @@ public:
 	/** Accessor function for current power */
 	UFUNCTION(BlueprintPure, Category = "Power")
 		float GetCurrentPower();
+
+	/** Accessor function for current power */
+	UFUNCTION(BlueprintPure, Category = "Power")
+		bool GetLightStatus();
 
 	/**
 	Function to update the character's power

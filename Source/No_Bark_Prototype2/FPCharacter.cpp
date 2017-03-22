@@ -49,14 +49,14 @@ AFPCharacter::AFPCharacter()
 	LightOffset = FVector(100.0f, 0.0f, 10.0f);
 
 
-
+	LightStatus = true;
 
 	DesiredIntensity = 3000.0f;
 
 	SpotLight1 = CreateDefaultSubobject<USpotLightComponent>(TEXT("SpotLight1"));
 	SpotLight1->SetupAttachment(FirstPersonCameraComponent);
 	SpotLight1->Intensity = DesiredIntensity;
-	SpotLight1->bVisible = true;
+	SpotLight1->bVisible = LightStatus;
 	SpotLight1->OuterConeAngle = 25.0f;
 	/*RootComponent = SpotLight1;*/
 
@@ -85,6 +85,7 @@ AFPCharacter::AFPCharacter()
 	BaseFactor = 10.0f;
 	//base decay rate
 	DecayRate = 0.5f;
+	
 }
 
 // Called when the game starts or when spawned
@@ -128,6 +129,7 @@ void AFPCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 void AFPCharacter::TriggerLight()
 {
+	
 	ToggleLight();
 }
 
@@ -176,7 +178,9 @@ void AFPCharacter::OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class
 
 void AFPCharacter::ToggleLight()
 {
-	SpotLight1->ToggleVisibility();
+	LightStatus = !LightStatus;
+	//SpotLight1->ToggleVisibility();
+	SpotLight1->SetVisibility(LightStatus, LightStatus);
 }
 
 void AFPCharacter::CollectPickups()
@@ -225,6 +229,12 @@ float AFPCharacter::GetInitialPower()
 float AFPCharacter::GetCurrentPower()
 {
 	return CharacterPower;
+}
+
+// Reports current power
+bool AFPCharacter::GetLightStatus()
+{
+	return LightStatus;
 }
 
 // called whenever power is increased or decreased
