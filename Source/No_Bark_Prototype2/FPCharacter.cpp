@@ -84,7 +84,7 @@ AFPCharacter::AFPCharacter()
 	LightFactor = 0.75f;
 	BaseFactor = 10.0f;
 	//base decay rate
-	DecayRate = 0.5f;
+	LightingTime = 0.0f;
 	
 }
 
@@ -105,6 +105,18 @@ void AFPCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 //	UpdatePower(-DeltaTime*DecayRate*(GetInitialPower()));
+	if (GetLightStatus() == true)
+	{
+		LightingTime = (+DeltaTime*1.0f)+LightingTime;
+	}
+	if (LightingTime >= 10.0f)
+	{
+		ToggleLight();	
+	}
+	if (LightingTime >= 11.0f)
+	{
+		LightingTime = 0.0f;
+	}
 }
 
 // Called to bind functionality to input
@@ -178,9 +190,19 @@ void AFPCharacter::OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class
 
 void AFPCharacter::ToggleLight()
 {
-	LightStatus = !LightStatus;
-	//SpotLight1->ToggleVisibility();
-	SpotLight1->SetVisibility(LightStatus, LightStatus);
+	if (GetCurrentPower() > 0.0f)
+	{
+		LightStatus = !LightStatus;
+		SpotLight1->SetVisibility(LightStatus, LightStatus);
+	}
+	else
+	{
+		LightStatus = false;
+		SpotLight1->SetVisibility(LightStatus, LightStatus);
+	}
+
+	
+	
 }
 
 void AFPCharacter::CollectPickups()

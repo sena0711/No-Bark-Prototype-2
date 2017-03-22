@@ -178,7 +178,8 @@ public:
 
 		/**The rate at which the character loses power */
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power", Meta = (BlueprintProtected = "true"))
-			float DecayRate;
+			float LightingTime;
+
 
 
 public:
